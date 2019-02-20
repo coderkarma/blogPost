@@ -8,6 +8,7 @@ mongoose.connect('mongodb://localhost/restful_blog_app', {
     useNewUrlParser: true
 });
 app.set("view engine", "ejs");
+app.use(express.static("public"))
 app.use(bodyParser.urlencoded({
     extended: true
 }, {
@@ -28,17 +29,15 @@ let blogSchema = new mongoose.Schema({
 let Blog = mongoose.model("Blog", blogSchema);
 
 // RestFul Routes
-app.get('/', (req, res) => {
+app.get('/', function (req, res) {
     res.redirect('/blogs')
 })
-
-
-app.get('/blogs', (req, res) => {
-    Blog.find({}, (err, blogs) => {
+app.get('/blogs', function (req, res) {
+    Blog.find({}, function (err, blogs) {
         if (err) {
-            console.log("ERROR")
+            console.log("error");
         } else {
-            res.render('index', {
+            res.render("index", {
                 blogs: blogs
             })
         }
